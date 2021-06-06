@@ -1,4 +1,4 @@
-# Autonomous Flight Engineer Estimation Project #
+# Autonomous Flight Engineer - 3D Quadrotor Estimation Project #
 
 In this project, I have implemented a 3D Quadrotor Estimator using Extended Kalman Filter technique. The drone is controlled with no noise in 3D Quadrotor Controller that I implemented in my last project. But the reality is we need to estimate current position of drone, velocity and yaw. All the maths used in the project can be found in the paper [Estimation for Quadrotors](https://www.overleaf.com/project/5c34caab7ecefc04087273b9).
 
