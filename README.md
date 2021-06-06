@@ -56,27 +56,25 @@ MeasuredStdDev_AccelXY = 0.506
 
 ***Success criteria:*** *Your standard deviations should accurately capture the value of approximately 68% of the respective measurements.*
 
-Here is an image of the step 1 output:
-![Scenario 1 - Sensor Noise](./images/SensorNoise.jpg)
+Here is an image of the Sensor Noise output:
+![Scenario 6 - Sensor Noise](./images/SensorNoise.jpg)
 
 ### Step 2: Attitude Estimation ###
 
-Now let's look at the first step to our state estimation: including information from our IMU.  In this step, you will be improving the complementary filter-type attitude filter with a better rate gyro attitude integration scheme.
+Next is the state estimation which included information from the IMU.  In this step, I improved the complementary filter-type attitude filter with a better rate gyro attitude integration scheme.
 
 1. Run scenario `07_AttitudeEstimation`.  For this simulation, the only sensor used is the IMU and noise levels are set to 0 (see `config/07_AttitudeEstimation.txt` for all the settings for this simulation).  There are two plots visible in this simulation.
    - The top graph is showing errors in each of the estimated Euler angles.
    - The bottom shows the true Euler angles and the estimates.
 Observe that there’s quite a bit of error in attitude estimation.
 
-2. In `QuadEstimatorEKF.cpp`, you will see the function `UpdateFromIMU()` contains a complementary filter-type attitude filter.  To reduce the errors in the estimated attitude (Euler Angles), implement a better rate gyro attitude integration scheme.  You should be able to reduce the attitude errors to get within 0.1 rad for each of the Euler angles, as shown in the screenshot below.
-
-![attitude example](images/attitude-screenshot.png)
-
-In the screenshot above the attitude estimation using linear scheme (left) and using the improved nonlinear scheme (right). Note that Y axis on error is much greater on left.
+2. In `QuadEstimatorEKF.cpp`, I updated method `UpdateFromIMU()` that contains a complementary filter-type attitude filter.  To reduce the errors in the estimated attitude (Euler Angles), I have implemented a better rate gyro attitude integration scheme. After this implementation, I was able to reduce the attitude errors to get within 0.1 rad for each of the Euler angles.
 
 ***Success criteria:*** *Your attitude estimator needs to get within 0.1 rad for each of the Euler angles for at least 3 seconds.*
 
-**Hint: see section 7.1.2 of [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) for a refresher on a good non-linear complimentary filter for attitude using quaternions.**
+Here is an image of the Attitude Estimation output:
+
+![Scenario 7 - Attitude Estimation](./images/AttitudeEst.jpg)
 
 
 ### Step 3: Prediction Step ###
