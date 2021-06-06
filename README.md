@@ -33,6 +33,14 @@ I builded up the estimator in multiple steps. At each step, there were a set of 
 
 Project outline:
 
+ - [Step 1: Sensor Noise](#step-1-sensor-noise)
+ - [Step 2: Attitude Estimation](#step-2-attitude-estimation)
+ - [Step 3: Prediction Step](#step-3-prediction-step)
+ - [Step 4: Magnetometer Update](#step-4-magnetometer-update)
+ - [Step 5: Closed Loop + GPS Update](#step-5-closed-loop--gps-update)
+ - [Step 6: Adding Your Controller](#step-6-adding-your-controller)
+
+
 ### Step 1: Sensor Noise ###
 
 For the controls project, the simulator was working with a perfect set of sensors, meaning none of the sensors had any noise.  The first step to adding additional realism to the problem, and developing an estimator, is adding noise to the quad's sensors.  For the first step, you will collect some simulated noisy sensor data and estimate the standard deviation of the quad's sensor.
