@@ -56,7 +56,8 @@ MeasuredStdDev_AccelXY = 0.506
 
 ***Success criteria:*** *Your standard deviations should accurately capture the value of approximately 68% of the respective measurements.*
 
-
+Here is an image of the step 1 output:
+![Scenario 1 - Sensor Noise](./images/SensorNoise.jpg)
 
 ### Step 2: Attitude Estimation ###
 
