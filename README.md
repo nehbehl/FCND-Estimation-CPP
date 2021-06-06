@@ -1,14 +1,8 @@
-# Estimation Project #
+# Autonomous Flight Engineer Estimation Project #
 
-Welcome to the estimation project.  In this project, you will be developing the estimation portion of the controller used in the CPP simulator.  By the end of the project, your simulated quad will be flying with your estimator and your custom controller (from the previous project)!
+In this project, I have implemented a 3D Quadrotor Estimator using Extended Kalman Filter technique. The drone is controlled with no noise in 3D Quadrotor Controller that I implemented in my last project. But the reality is we need to estimate current position of drone, velocity and yaw. All the maths used in the project can be found in the paper [Estimation for Quadrotors](https://www.overleaf.com/project/5c34caab7ecefc04087273b9).
 
-This README is broken down into the following sections:
-
- - [Setup](#setup) - the environment and code setup required to get started and a brief overview of the project structure
- - [The Tasks](#the-tasks) - the tasks you will need to complete for the project
- - [Tips and Tricks](#tips-and-tricks) - some additional tips and tricks you may find useful along the way
- - [Submission](#submission) - overview of the requirements for your project submission
-
+[Detailed Project Explantion Page from Udacity](https://github.com/udacity/FCND-Estimation-CPP).
 
 ## Setup ##
 
@@ -23,57 +17,21 @@ This project will continue to use the C++ development environment you set up in 
  
  3. You should now be able to compile and run the estimation simulator just as you did in the controls project
 
+## Project Structure ##
 
-### Project Structure ###
+Most of the code provided is the drone simulator. The following files where are the the main files need to complete:
 
-For this project, you will be interacting with a few more files than before.
-
- - The EKF is already partially implemented for you in `QuadEstimatorEKF.cpp`
-
- - Parameters for tuning the EKF are in the parameter file `QuadEstimatorEKF.txt`
-
- - When you turn on various sensors (the scenarios configure them, e.g. `Quad.Sensors += SimIMU, SimMag, SimGPS`), additional sensor plots will become available to see what the simulated sensors measure.
-
- - The EKF implementation exposes both the estimated state and a number of additional variables. In particular:
-
-   - `Quad.Est.E.X` is the error in estimated X position from true value.  More generally, the variables in `<vehicle>.Est.E.*` are relative errors, though some are combined errors (e.g. MaxEuler).
-
-   - `Quad.Est.S.X` is the estimated standard deviation of the X state (that is, the square root of the appropriate diagonal variable in the covariance matrix). More generally, the variables in `<vehicle>.Est.S.*` are standard deviations calculated from the estimator state covariance matrix.
-
-   - `Quad.Est.D` contains miscellaneous additional debug variables useful in diagnosing the filter. You may or might not find these useful but they were helpful to us in verifying the filter and may give you some ideas if you hit a block.
-
-
-#### `config` Directory ####
-
-In the `config` directory, in addition to finding the configuration files for your controller and your estimator, you will also see configuration files for each of the simulations.  For this project, you will be working with simulations 06 through 11 and you may find it insightful to take a look at the configuration for the simulation.
-
-As an example, if we look through the configuration file for scenario 07, we see the following parameters controlling the sensor:
-
-```
-# Sensors
-Quad.Sensors = SimIMU
-# use a perfect IMU
-SimIMU.AccelStd = 0,0,0
-SimIMU.GyroStd = 0,0,0
-```
-
-This configuration tells us that the simulator is only using an IMU and the sensor data will have no noise.  You will notice that for each simulator these parameters will change slightly as additional sensors are being used and the noise behavior of the sensors change.
+* [/src/QuadEstimatorEKF.cpp](./src/QuadEstimatorEKF.cpp): The Extended Kalman Filter for state estimation is implemented in this file.
+* [/src/QuadControl.cpp](./src/QuadControl.cpp): The cascade PID control implemented in this file. This is implemented on the previous project, Control of a 3D Quadrotor.
+* [/config/QuadEstimatorEKF.txt](./config/QuadEstimatorEKF.txt): Parameters for tuning the EKF are in this parameter file.
+* [/config/QuadControlParams.txt](./config/QuadControlParams.txt): Parameters for the PID control code is in QuadControlParams.txt
 
 
 ## The Tasks ##
 
-Once again, you will be building up your estimator in pieces.  At each step, there will be a set of success criteria that will be displayed both in the plots and in the terminal output to help you along the way.
+I builded up the estimator in multiple steps. At each step, there were a set of success criteria that were displayed both in the plots and in the terminal output.
 
 Project outline:
-
- - [Step 1: Sensor Noise](#step-1-sensor-noise)
- - [Step 2: Attitude Estimation](#step-2-attitude-estimation)
- - [Step 3: Prediction Step](#step-3-prediction-step)
- - [Step 4: Magnetometer Update](#step-4-magnetometer-update)
- - [Step 5: Closed Loop + GPS Update](#step-5-closed-loop--gps-update)
- - [Step 6: Adding Your Controller](#step-6-adding-your-controller)
-
-
 
 ### Step 1: Sensor Noise ###
 
