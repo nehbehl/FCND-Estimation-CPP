@@ -86,7 +86,7 @@ In this next step I have implemented the prediction step of your filter.
 2. In `QuadEstimatorEKF.cpp`, implemented the state prediction step in the `PredictState()` functon. After implementing this, the estimator state track the actual state, with only reasonably slow drift.
 
 Here is an image output of Predict state:
-![Scenario 8 - Prediction](./images/PredState.jpg)
+![Scenario 8 - Prediction State](./images/PredState.jpg)
 
 3. Now let's introduce a realistic IMU, one with noise.  Run scenario `09_PredictionCov`. You will see a small fleet of quadcopter all using your prediction code to integrate forward. You will see two plots:
    - The top graph shows 10 (prediction-only) position X estimates
@@ -100,89 +100,65 @@ You will notice however that the estimated covariance (white bounds) currently d
 ***Success criteria:*** *This step doesn't have any specific measurable criteria being checked.*
 
 Here is an image of the Prediction Covariance output:
-![Scenario 9 - Prediction](./images/PredCov.jpg)
+![Scenario 9 - Prediction Covariance](./images/PredCov.jpg)
 
 Looking at this result, you can see that in the first part of the plot, our covariance (the white line) grows very much like the data.
 
 ### Step 4: Magnetometer Update ###
 
-Up until now we've only used the accelerometer and gyro for our state estimation.  In this step, you will be adding the information from the magnetometer to improve your filter's performance in estimating the vehicle's heading.
+Up until now we've only used the accelerometer and gyro for our state estimation.  In this step, I added the information from the magnetometer to improve my filter's performance in estimating the vehicle's heading.
 
 1. Run scenario `10_MagUpdate`.  This scenario uses a realistic IMU, but the magnetometer update hasn’t been implemented yet. As a result, you will notice that the estimate yaw is drifting away from the real value (and the estimated standard deviation is also increasing).  Note that in this case the plot is showing you the estimated yaw error (`quad.est.e.yaw`), which is drifting away from zero as the simulation runs.  You should also see the estimated standard deviation of that state (white boundary) is also increasing.
 
-2. Tune the parameter `QYawStd` (`QuadEstimatorEKF.txt`) for the QuadEstimatorEKF so that it approximately captures the magnitude of the drift, as demonstrated here:
+2. Tuned the parameter `QYawStd` (`QuadEstimatorEKF.txt`) for the QuadEstimatorEKF so that it approximately captures the magnitude of the drift.
 
-![mag drift](images/mag-drift.png)
-
-3. Implement magnetometer update in the function `UpdateFromMag()`.  Once completed, you should see a resulting plot similar to this one:
-
-![mag good](images/mag-good-solution.png)
-
+3. Implemented magnetometer update in the function `UpdateFromMag()`. 
+ 
 ***Success criteria:*** *Your goal is to both have an estimated standard deviation that accurately captures the error and maintain an error of less than 0.1rad in heading for at least 10 seconds of the simulation.*
 
-**Hint: after implementing the magnetometer update, you may have to once again tune the parameter `QYawStd` to better balance between the long term drift and short-time noise from the magnetometer.**
-
-**Hint: see section 7.3.2 of [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) for a refresher on the magnetometer update.**
-
+Here is an image for Magnetometer Update output:
+![Scenario 10 - Magnetometer Update](./images/MagUpdate.jpg)
 
 ### Step 5: Closed Loop + GPS Update ###
 
-1. Run scenario `11_GPSUpdate`.  At the moment this scenario is using both an ideal estimator and and ideal IMU.  Even with these ideal elements, watch the position and velocity errors (bottom right). As you see they are drifting away, since GPS update is not yet implemented.
+In this step, I have implemented GPS Update code.
 
-2. Let's change to using your estimator by setting `Quad.UseIdealEstimator` to 0 in `config/11_GPSUpdate.txt`.  Rerun the scenario to get an idea of how well your estimator work with an ideal IMU.
+1. Run scenario `11_GPSUpdate`.  At the moment this scenario is using both an ideal estimator and and ideal IMU.  Even with these ideal elements, watch the position and velocity errors (bottom right). 
 
-3. Now repeat with realistic IMU by commenting out these lines in `config/11_GPSUpdate.txt`:
+2. Here we change `Quad.UseIdealEstimator` to 0 in `config/11_GPSUpdate.txt`.  Rerun the scenario to get an idea of how well your estimator work with an ideal IMU.
+
+3. Now repeated with realistic IMU by commenting out these lines in `config/11_GPSUpdate.txt`:
 ```
 #SimIMU.AccelStd = 0,0,0
 #SimIMU.GyroStd = 0,0,0
 ```
 
-4. Tune the process noise model in `QuadEstimatorEKF.txt` to try to approximately capture the error you see with the estimated uncertainty (standard deviation) of the filter.
+4. Tuned the process noise model in `QuadEstimatorEKF.txt` to try to approximately capture the error with the estimated uncertainty (standard deviation) of the filter.
 
-5. Implement the EKF GPS Update in the function `UpdateFromGPS()`.
+5. Implemented the EKF GPS Update in the function `UpdateFromGPS()`.
 
-6. Now once again re-run the simulation.  Your objective is to complete the entire simulation cycle with estimated position error of < 1m (you’ll see a green box over the bottom graph if you succeed).  You may want to try experimenting with the GPS update parameters to try and get better performance.
-
-***Success criteria:*** *Your objective is to complete the entire simulation cycle with estimated position error of < 1m.*
-
-**Hint: see section 7.3.1 of [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) for a refresher on the GPS update.**
-
-At this point, congratulations on having a working estimator!
-
-### Step 6: Adding Your Controller ###
-
-Up to this point, we have been working with a controller that has been relaxed to work with an estimated state instead of a real state.  So now, you will see how well your controller performs and de-tune your controller accordingly.
-
-1. Replace `QuadController.cpp` with the controller you wrote in the last project.
-
-2. Replace `QuadControlParams.txt` with the control parameters you came up with in the last project.
-
-3. Run scenario `11_GPSUpdate`. If your controller crashes immediately do not panic. Flying from an estimated state (even with ideal sensors) is very different from flying with ideal pose. You may need to de-tune your controller. Decrease the position and velocity gains (we’ve seen about 30% detuning being effective) to stabilize it.  Your goal is to once again complete the entire simulation cycle with an estimated position error of < 1m.
-
-**Hint: you may find it easiest to do your de-tuning as a 2 step process by reverting to ideal sensors and de-tuning under those conditions first.**
+6. Now once again ran the simulation. The objective is to complete the entire simulation cycle with estimated position error of < 1m (you’ll see a green box over the bottom graph if you succeed).  
 
 ***Success criteria:*** *Your objective is to complete the entire simulation cycle with estimated position error of < 1m.*
 
+Here is an image for GPS Update output:
+![Scenario 11 - GPS Update](./images/GPSU_1.jpg)
 
-## Tips and Tricks ##
+### Step 6: Adding my 3D Quadrotor Controller ###
 
- - When it comes to transposing matrices, `.transposeInPlace()` is the function you want to use to transpose a matrix
+Up to this point, we have been working with a controller that has been relaxed to work with an estimated state instead of a real state.  So now, I will set up environment to use my 3D Quadrotor controller implementation from my previous project.
 
- - The [Estimation for Quadrotors](https://www.overleaf.com/read/vymfngphcccj) document contains a helpful mathematical breakdown of the core elements on your estimator
+1. Replaced `QuadController.cpp` with the controller implementation.
 
-## Submission ##
+2. Replaced `QuadControlParams.txt` with the control parameters I came up with in the last project.
 
-For this project, you will need to submit:
+3. Ran scenario `11_GPSUpdate`. The goal was to once again complete the entire simulation cycle with an estimated position error of < 1m.
 
- - a completed estimator that meets the performance criteria for each of the steps by submitting:
-   - `QuadEstimatorEKF.cpp`
-   - `config/QuadEstimatorEKF.txt`
+***Success criteria:*** *Your objective is to complete the entire simulation cycle with estimated position error of < 1m.*
 
- - a re-tuned controller that, in conjunction with your tuned estimator, is capable of meeting the criteria laid out in Step 6 by submitting:
-   - `QuadController.cpp`
-   - `config/QuadControlParams.txt`
+Here is an image for GPS Update output with my controller:
 
- - a write up addressing all the points of the rubric
+![Scenario 11 - GPS Update With My Controller](./images/GPSU_2_withmycontroller.jpg)
 
 ## Authors ##
 
