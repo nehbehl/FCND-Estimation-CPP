@@ -54,7 +54,7 @@ For the controls project, the simulator was working with a perfect set of sensor
 MeasuredStdDev_GPSPosXY = 0.703
 MeasuredStdDev_AccelXY = 0.506
 
-***Success criteria:*** *Your standard deviations should accurately capture the value of approximately 68% of the respective measurements.*
+***Success criteria:*** *The standard deviations should accurately capture the value of approximately 68% of the respective measurements.*
 
 Here is an image of the Sensor Noise output:
 ![Scenario 6 - Sensor Noise](./images/SensorNoise.jpg)
@@ -70,7 +70,7 @@ Observe that there’s quite a bit of error in attitude estimation.
 
 2. In `QuadEstimatorEKF.cpp`, I updated method `UpdateFromIMU()` that contains a complementary filter-type attitude filter.  To reduce the errors in the estimated attitude (Euler Angles), I have implemented a better rate gyro attitude integration scheme. After this implementation, I was able to reduce the attitude errors to get within 0.1 rad for each of the Euler angles.
 
-***Success criteria:*** *Your attitude estimator needs to get within 0.1 rad for each of the Euler angles for at least 3 seconds.*
+***Success criteria:*** *The attitude estimator needs to get within 0.1 rad for each of the Euler angles for at least 3 seconds.*
 
 Here is an image of the Attitude Estimation output:
 
@@ -114,7 +114,7 @@ Up until now we've only used the accelerometer and gyro for our state estimation
 
 3. Implemented magnetometer update in the function `UpdateFromMag()`. 
  
-***Success criteria:*** *Your goal is to both have an estimated standard deviation that accurately captures the error and maintain an error of less than 0.1rad in heading for at least 10 seconds of the simulation.*
+***Success criteria:*** *The goal is to both have an estimated standard deviation that accurately captures the error and maintain an error of less than 0.1rad in heading for at least 10 seconds of the simulation.*
 
 Here is an image for Magnetometer Update output:
 ![Scenario 10 - Magnetometer Update](./images/MagUpdate.jpg)
@@ -139,7 +139,7 @@ In this step, I have implemented GPS Update code.
 
 6. Now once again ran the simulation. The objective is to complete the entire simulation cycle with estimated position error of < 1m (you’ll see a green box over the bottom graph if you succeed).  
 
-***Success criteria:*** *Your objective is to complete the entire simulation cycle with estimated position error of < 1m.*
+***Success criteria:*** *The objective is to complete the entire simulation cycle with estimated position error of < 1m.*
 
 Here is an image for GPS Update output:
 ![Scenario 11 - GPS Update](./images/GPSU_1.jpg)
@@ -154,7 +154,7 @@ Up to this point, we have been working with a controller that has been relaxed t
 
 3. Ran scenario `11_GPSUpdate`. The goal was to once again complete the entire simulation cycle with an estimated position error of < 1m.
 
-***Success criteria:*** *Your objective is to complete the entire simulation cycle with estimated position error of < 1m.*
+***Success criteria:*** *The objective is to complete the entire simulation cycle with estimated position error of < 1m.*
 
 Here is an image for GPS Update output with my controller:
 
